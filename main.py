@@ -36,7 +36,7 @@ def main():
         imgs = list(img.to(device) for img in imgs)
         annotations = [{k: v.to(device) for k, v in t.items()}
                        for t in annotations]
-        print(annotations)
+        # print(annotations)
 
     # model = get_model_instance_segmentation(config.num_classes, file_name='model.pth')
     model = get_model_instance_segmentation(config.num_classes)
@@ -46,9 +46,7 @@ def main():
 
     # parameters
     params = [p for p in model.parameters() if p.requires_grad]
-    optimizer = torch.optim.SGD(
-        params, lr=config.lr, momentum=config.momentum, weight_decay=config.weight_decay
-    )
+    optimizer = torch.optim.SGD(params, lr=config.lr, momentum=config.momentum, weight_decay=config.weight_decay)
     # optimizer = torch.optim.Adam(params, lr=config.lr)
 
     len_dataloader = len(data_loader)

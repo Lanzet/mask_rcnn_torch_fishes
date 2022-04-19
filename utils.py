@@ -48,7 +48,7 @@ class myOwnDataset(torch.utils.data.Dataset):
             xmax = xmin + coco_annotation[i]["bbox"][2]
             ymax = ymin + coco_annotation[i]["bbox"][3]
             boxes.append([xmin, ymin, xmax, ymax])
-        mask = torch.as_tensor(mask, dtype=torch.uint8)
+        mask = torch.as_tensor(np.array(mask), dtype=torch.uint8).unsqueeze(dim=0)
         # print(mask.shape)
         boxes = torch.as_tensor(boxes, dtype=torch.float32)
         # print(boxes.shape)
@@ -63,10 +63,6 @@ class myOwnDataset(torch.utils.data.Dataset):
         areas = torch.as_tensor(areas, dtype=torch.float32)
         # Iscrowd
         iscrowd = torch.zeros((num_objs,), dtype=torch.int64)
-
-        if self.transforms is not None:
-            img = self.transforms(img)
-            # mask = self.transforms(mask) # Lalo del futuro, lo siento por este error
         
         # Annotation is in dictionary format
         my_annotation = {}
@@ -76,6 +72,10 @@ class myOwnDataset(torch.utils.data.Dataset):
         my_annotation["area"] = areas
         my_annotation["iscrowd"] = iscrowd
         my_annotation["masks"] = mask
+
+        if self.transforms is not None:
+            img = self.transforms(img)
+            # mask = self.transforms(mask) # Lalo del futuro, lo siento por este error
 
         return img, my_annotation
 

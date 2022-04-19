@@ -1,0 +1,6 @@
+win_38_torch/
+__pycache__/
+my_data/train/
+my_data/train_ori
+my_data/my_train_coco_ori.json
+*.pth

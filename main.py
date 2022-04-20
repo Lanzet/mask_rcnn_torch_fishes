@@ -46,8 +46,8 @@ def main():
 
     # parameters
     params = [p for p in model.parameters() if p.requires_grad]
-    optimizer = torch.optim.SGD(params, lr=config.lr, momentum=config.momentum, weight_decay=config.weight_decay)
-    # optimizer = torch.optim.Adam(params, lr=config.lr)
+    # optimizer = torch.optim.SGD(params, lr=config.lr, momentum=config.momentum, weight_decay=config.weight_decay)
+    optimizer = torch.optim.Adam(params, lr=config.lr)
 
     len_dataloader = len(data_loader)
 

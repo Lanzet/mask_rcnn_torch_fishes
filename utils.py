@@ -6,6 +6,7 @@ import torchvision
 from PIL import Image, ImageDraw
 from pycocotools.coco import COCO
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
+import matplotlib.pyplot as plt
 
 
 class myOwnDataset(torch.utils.data.Dataset):
@@ -48,7 +49,7 @@ class myOwnDataset(torch.utils.data.Dataset):
             xmax = xmin + coco_annotation[i]["bbox"][2]
             ymax = ymin + coco_annotation[i]["bbox"][3]
             boxes.append([xmin, ymin, xmax, ymax])
-        mask = torch.as_tensor(np.array(mask), dtype=torch.uint8).unsqueeze(dim=0)
+        
         # print(mask.shape)
         boxes = torch.as_tensor(boxes, dtype=torch.float32)
         # print(boxes.shape)
@@ -71,11 +72,17 @@ class myOwnDataset(torch.utils.data.Dataset):
         my_annotation["image_id"] = img_id
         my_annotation["area"] = areas
         my_annotation["iscrowd"] = iscrowd
-        my_annotation["masks"] = mask
-
+        
+        masks = []
         if self.transforms is not None:
             img = self.transforms(img)
             # mask = self.transforms(mask) # Lalo del futuro, lo siento por este error
+            for mas_k in mask:
+                mas_k = self.transforms(mas_k)
+                masks.append(mas_k)
+                
+        # mask = torch.as_tensor(masks, dtype=torch.uint8).unsqueeze(dim=0)        
+        my_annotation["masks"] = masks
 
         return img, my_annotation
 
@@ -86,8 +93,9 @@ class myOwnDataset(torch.utils.data.Dataset):
 # In my case, just added ToTensor
 def get_transform():
     custom_transforms = []
-    # custom_transforms.append(torchvision.transforms.Resize(64))
+    custom_transforms.append(torchvision.transforms.Resize(64))
     custom_transforms.append(torchvision.transforms.ToTensor())
+    custom_transforms.append(torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]))
     return torchvision.transforms.Compose(custom_transforms)
 
 

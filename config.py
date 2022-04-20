@@ -7,7 +7,7 @@ train_batch_size = 5
 
 # Params for dataloader
 train_shuffle_dl = True
-num_workers_dl = 4
+num_workers_dl = 10
 
 # Params for training
 
@@ -15,6 +15,6 @@ num_workers_dl = 4
 num_classes = 2
 num_epochs = 5
 
-lr = 0.005
+lr = 0.001
 momentum = 0.9
 weight_decay = 0.005

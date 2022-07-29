@@ -4,3 +4,4 @@ my_data/train/
 my_data/train_ori
 my_data/my_train_coco_ori.json
 *.pth
+my_data_old/
